@@ -1,0 +1,46 @@
+<div class="main-content">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-7">
+            <app-shipment-form #shipmentform [(shipmentAnnouncements)]="shipmentAnnouncements"></app-shipment-form>
+        </div>
+        <div class="col-md-5">
+            <h4>{{'Open Shipments' | translate}}</h4>
+            <div *ngFor="let sa of shipmentAnnouncements">
+                    <mat-card class="announcement-card">
+                        <mat-card-header>
+                            <mat-card-title>{{sa.description}}</mat-card-title>
+                            <mat-card-subtitle (click)="displayShipmentAnnouncement(sa)">{{sa.destination.city}}<br>{{sa.latestdeliverydate | date}}</mat-card-subtitle>
+                        </mat-card-header>
+                        <mat-card-content>
+                            <mat-accordion>
+                                <mat-expansion-panel>
+                                    <mat-expansion-panel-header>
+                                    <mat-panel-title>
+                                        {{'Requests'}}:
+                                    </mat-panel-title>
+                                    <mat-panel-description>
+                                        <div>{{sa.shipmentrequests?.length}}</div>
+                                        <div *ngIf="!sa.shipmentrequests">0</div>
+                                    </mat-panel-description>
+                                    </mat-expansion-panel-header>
+                                    <mat-list role="list">
+                                        <mat-list-item role="listitem" *ngFor="let sr of sa.shipmentrequests">
+                                            <button class="btn">{{'More' | translate}}</button>&nbsp;&nbsp;
+                                            {{sr.deliverer.displayname}}, {{sr.pickupdatetime | date}}, {{sr.deliverydatetime | date}}
+                                        </mat-list-item>
+                                    </mat-list>
+                                </mat-expansion-panel>
+                            </mat-accordion>
+                        </mat-card-content>
+                        <mat-card-actions>
+                            <button class="btn btn-danger" (click)="shipmentform.shipmentAnnouncement = sa">{{'Alter' | translate}}</button>
+                            <button class="btn btn-danger" (click)="deleteShipmentAnnouncement(sa)">{{'Delete' | translate}}</button>
+                        </mat-card-actions>
+                    </mat-card>
+                </div>
+                  
+        </div>
+    </div>
+</div>
+</div>

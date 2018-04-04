@@ -1,0 +1,47 @@
+<div class="container-fluid">
+  <div class="row">
+    <div>
+        <mat-list>
+            <mat-list-item>
+              <div class="field-name">{{ 'Description' | translate }}</div>:  {{ shipmentAnnouncement.description }}&nbsp;&nbsp;<div class="field-name">{{'Size' | translate}}</div>:  {{ shipmentAnnouncement.size.name}}
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <div class="field-name">{{ 'Pick up from' | translate }}</div>:  {{ shipmentAnnouncement.source.street }}, {{ shipmentAnnouncement.source.postcode }} {{ shipmentAnnouncement.source.city }}, {{ shipmentAnnouncement.source.country }}
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <div class="field-name">{{ 'Deliver to' | translate }}</div>:  {{ shipmentAnnouncement.destination.street }}, {{ shipmentAnnouncement.destination.postcode }} {{ shipmentAnnouncement.destination.city }}, {{ shipmentAnnouncement.destination.country }}
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item>
+              <div class="field-name">{{'Earliest Pickup Date' | translate}}</div>:  {{ shipmentAnnouncement.earliestpickupdate | date}}&nbsp;&nbsp;<div class="field-name">{{'Latest Pickup Date' | translate}}</div>:  {{ shipmentAnnouncement.latestpickupdate | date}}&nbsp;&nbsp;<div class="field-name">  {{'Delivery Date' | translate}}</div>:  {{ shipmentAnnouncement.latestdeliverydate | date}}
+            </mat-list-item>
+            <mat-divider></mat-divider>
+            <mat-list-item [ngStyle]="{ 'margin-top': '60px' }">
+                <div>
+                  <form role="form" name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="{{'Suggested Pickup Date' | translate}}" name="suggestedpickupdate" [(ngModel)]="modelsuggestedpickupdate" #suggestedpickupdate required>
+                        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                        <mat-datepicker #picker1></mat-datepicker>
+                        <mat-error *ngIf="f.submitted && !suggestedpickupdate.valid">{{'Suggested Pickup Date is required' | translate}}</mat-error>
+                    </mat-form-field>
+                    <mat-form-field>
+                        <input matInput [matDatepicker]="picker2" [min]="minDate" [max]="maxDate" placeholder="{{'Suggested Delivery Date' | translate}}" name="suggesteddeliverydate" [(ngModel)]="modelsuggesteddeliverydate" #suggesteddeliverydate required>
+                        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                        <mat-datepicker #picker2></mat-datepicker>
+                        <mat-error *ngIf="f.submitted && !suggesteddeliverydate.valid">{{'Suggested Delivery Date is required' | translate}}</mat-error>
+                    </mat-form-field>
+                    
+                    <div [ngStyle]="{ 'margin-top': '10px' }">
+                      <button class="btn btn-danger">{{'Offer Transportation' | translate}}</button>
+                      <button class="btn btn-danger" (click)="onNoClick()">{{'Cancel' | translate}}</button>
+                    </div>
+                  </form>
+                </div>
+            </mat-list-item>
+        </mat-list>         
+    </div>
+  </div>
+</div>

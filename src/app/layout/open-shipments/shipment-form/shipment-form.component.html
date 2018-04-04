@@ -1,0 +1,122 @@
+<h4 *ngIf="!changeFlag">{{'New Shipment' | translate}}</h4>
+<h4 *ngIf="changeFlag">{{'Change Shipment' | translate}}</h4>
+<mat-card>
+    <form role="form" name="form" (ngSubmit)="f.form.valid && submitForm(f)" #f="ngForm" novalidate>
+        <mat-form-field [ngStyle]="{ 'width': '100%' }">
+            <input matInput type="text" placeholder="{{'Description' | translate}}" name="description" [(ngModel)]="modelshipment.description" #description="ngModel" required />
+            <mat-error *ngIf="f.submitted && !description.valid">{{'Description is required' | translate}}</mat-error>
+        </mat-form-field>
+        <mat-form-field [ngStyle]="{ 'width': '100%' }">
+            <mat-select [(value)]="selected" placeholder="{{'Shipment Size' | translate}}" #shipmentsize required>
+                <mat-option *ngIf="changeFlag" value="1">
+                    {{currentShipmentAnnouncement?.size.name}},
+                    {{currentShipmentAnnouncement?.size.maxheight}} x
+                    {{currentShipmentAnnouncement?.size.maxlength}} x
+                    {{currentShipmentAnnouncement?.size.maxwidth}}
+                    {{currentShipmentAnnouncement?.size.measure}},
+                    {{currentShipmentAnnouncement?.size.maxweight}} kg
+                </mat-option>
+                <mat-option *ngFor="let i of selectshipmentsizes" [value]="i.value">
+                {{ i.label }}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker1" [min]="minDate" [max]="maxDate" placeholder="{{'Earliest Pickup Date' | translate}}" name="earliestpickupdate" [(ngModel)]="modelearliestpickupdate" #earliestpickupdate required>
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+            <mat-error *ngIf="f.submitted && !earliestpickupdate.valid">{{'Earliest Pickup Date is required' | translate}}</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker2" [min]="minDate" [max]="maxDate" placeholder="{{'Latest Pickup Date' | translate}}" name="latestpickupdate" [(ngModel)]="modellatestpickupdate" #latestpickupdate required>
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+            <mat-error *ngIf="f.submitted && !latestpickupdate.valid">{{'Latest Pickup Date is required' | translate}}</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-form-field>
+            <input matInput [matDatepicker]="picker3" [min]="minDate" [max]="maxDate" placeholder="{{'Delivery Date' | translate}}" name="deliverydate" [(ngModel)]="modeldeliverydate" #deliverydate required>
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+            <mat-error *ngIf="f.submitted && !deliverydate.valid">{{'Delivery Date is required' | translate}}</mat-error>
+        </mat-form-field>
+        <br />
+        <mat-card>
+            <mat-card-subtitle>{{'Sender Address' | translate}}</mat-card-subtitle>
+            <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                <input matInput type="text" placeholder="{{'Company' | translate}} ({{'Optional' | translate}})" name="companyname" [(ngModel)]="modelsourceaddress.companyname" #companyname="ngModel" />
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '35%' }">
+                <input matInput type="text" placeholder="{{'First Name' | translate}}" name="firstname" [(ngModel)]="modelsourceaddress.firstname" #firstname="ngModel" required />
+                <mat-error *ngIf="f.submitted && !firstname.valid">{{'First and Last Name are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '64.6%' }">
+                <input matInput type="text" placeholder="{{'Last Name' | translate}}" name="lastname" [(ngModel)]="modelsourceaddress.lastname" #lastname="ngModel" required />
+                <mat-error *ngIf="f.submitted && !lastname.valid">{{'First and Last Name are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '80%' }">
+                <input matInput type="text" placeholder="{{'Street' | translate}}" name="street" [(ngModel)]="modelsourceaddress.street" #street="ngModel" required />
+                <mat-error *ngIf="f.submitted && !street.valid">{{'Street and Street No. are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                <input matInput type="text" placeholder="{{'No.' | translate}}" name="streetno" [(ngModel)]="modelsourceaddress.streetno" #streetno="ngModel" required />
+                <mat-error *ngIf="f.submitted && !streetno.valid">{{'Street and Street No. are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                <input matInput type="text" placeholder="{{'Postcode' | translate}}" name="postcode" [(ngModel)]="modelsourceaddress.postcode" #postcode="ngModel" required />
+                <mat-error *ngIf="f.submitted && !postcode.valid">{{'Postcode and City are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '80%' }">
+                <input matInput type="text" placeholder="{{'City' | translate}}" name="city" [(ngModel)]="modelsourceaddress.city" #city="ngModel" required />
+                <mat-error *ngIf="f.submitted && !city.valid">{{'Postcode and City are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                <input matInput type="text" placeholder="{{'Country' | translate}}" name="country" [(ngModel)]="modelsourceaddress.country" #country="ngModel" required />
+                <mat-error *ngIf="f.submitted && !country.valid">{{'Country is required' | translate}}</mat-error>
+            </mat-form-field>
+        </mat-card>
+
+        <mat-card [ngStyle]="{ 'margin-top': '10px' }">
+            <mat-card-subtitle>{{'Shipping Address' | translate}}</mat-card-subtitle>
+            <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                <input matInput type="text" placeholder="{{'Company' | translate}} ({{'Optional' | translate}})" name="dcompanyname" [(ngModel)]="modeldestinationaddress.companyname" #dcompanyname="ngModel" />
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '35%' }">
+                <input matInput type="text" placeholder="{{'First Name' | translate}}" placeholder="{{'First Name' | translate}}" name="dfirstname" [(ngModel)]="modeldestinationaddress.firstname" #dfirstname="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dfirstname.valid">{{'First and Last Name are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '64.6%' }">
+                <input matInput type="text" placeholder="{{'Last Name' | translate}}" name="dlastname" [(ngModel)]="modeldestinationaddress.lastname" #dlastname="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dlastname.valid">{{'First and Last Name are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '80%' }">
+                <input matInput type="text" placeholder="{{'Street' | translate}}" name="dstreet" [(ngModel)]="modeldestinationaddress.street" #dstreet="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dstreet.valid">{{'Street and Street No. are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                <input matInput type="text" placeholder="{{'No.' | translate}}" name="dstreetno" [(ngModel)]="modeldestinationaddress.streetno" #dstreetno="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dstreetno.valid">{{'Street and Street No. are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                <input matInput type="text" placeholder="{{'Postcode' | translate}}" name="dpostcode" [(ngModel)]="modeldestinationaddress.postcode" #dpostcode="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dpostcode.valid">{{'Postcode and City are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '80%' }">
+                <input matInput type="text" placeholder="{{'City' | translate}}" name="dcity" [(ngModel)]="modeldestinationaddress.city" #dcity="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dcity.valid">{{'Postcode and City are required' | translate}}</mat-error>
+            </mat-form-field>
+            <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                <input matInput type="text" placeholder="{{'Country' | translate}}" name="dcountry" [(ngModel)]="modeldestinationaddress.country" #dcountry="ngModel" required />
+                <mat-error *ngIf="f.submitted && !dcountry.valid">{{'Country is required' | translate}}</mat-error>
+            </mat-form-field>
+        </mat-card>
+        
+            
+                
+        <button class="btn btn-danger">{{'Announce' | translate}}</button>
+        <button *ngIf="changeFlag" class="btn btn-danger" (click)="resetForm(f)">{{'Cancel' | translate}}</button>
+        
+        
+    </form>
+</mat-card> 

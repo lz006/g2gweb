@@ -1,0 +1,7 @@
+<app-user-table [usersInput]="users" [tableMetaData]="tableMetaData" (change)="handleUsersChanged()"></app-user-table>
+
+<div class="row">
+  <div class="col-md-12">
+    <button mat-button (click)="openCreateUserDialog()" class="btn pull-right">{{'Create User' | translate}}</button>
+  </div>
+</div>

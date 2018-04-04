@@ -1,0 +1,113 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-4">
+                
+                <form role="form" name="form" (ngSubmit)="f.form.valid && submitForm()" #f="ngForm" novalidate>
+                    <mat-card [ngStyle]="{ 'height': '648px' }">
+                    <mat-card>
+                        <mat-card-subtitle>
+                            {{ 'Catch goods from' | translate }}:
+                        </mat-card-subtitle>
+                        <mat-form-field [ngStyle]="{ 'width': '25%' }">
+                            <input matInput type="number" min="1" max="30" placeholder="{{'Radius' | translate}}" name="radius" [(ngModel)]="modelsourceaddress.radius" #radius="ngModel" />
+                        </mat-form-field>
+                        <mat-slider class="slider-right" [ngStyle]="{ 'width': '70%' }" min="1" max="30" step="1" value="1"
+                            [disabled]="disabled"
+                            [invert]="invert"
+                            [thumb-label]="thumbLabel"
+                            [tick-interval]="tickInterval"
+                            name="slider"
+                            [(ngModel)]="modelsourceaddress.radius"
+                            #slider="ngModel">
+                        </mat-slider>
+                        <br />
+                        <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                            <input matInput type="text" placeholder="{{'Postcode' | translate}}" name="postcode" [(ngModel)]="modelsourceaddress.postcode" #postcode="ngModel" required />
+                            <mat-error *ngIf="f.submitted && !postcode.valid">{{'Postcode and City are required' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field [ngStyle]="{ 'width': '79%' }">
+                            <input matInput type="text" placeholder="{{'City' | translate}}" name="city" [(ngModel)]="modelsourceaddress.city" #city="ngModel" required />
+                            <mat-error *ngIf="f.submitted && !city.valid">{{'Postcode and City are required' | translate}}</mat-error>
+                        </mat-form-field>
+                        <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                            <input matInput type="text" placeholder="{{'Country' | translate}}" name="country" [(ngModel)]="modelsourceaddress.country" #country="ngModel" required />
+                            <mat-error *ngIf="f.submitted && !country.valid">{{'Postcode and City are required' | translate}}</mat-error>
+                        </mat-form-field>
+                    </mat-card>
+                    <mat-card>
+                        <mat-card-subtitle>
+                            {{ 'Deliver goods to' | translate }}:
+                        </mat-card-subtitle>
+                        <mat-form-field [ngStyle]="{ 'width': '25%' }">
+                            <input matInput type="number" min="1" max="30" placeholder="{{'Radius' | translate}}" name="radiusDest" [(ngModel)]="modeldestinationaddress.radius" #radiusDest="ngModel" />
+                        </mat-form-field>
+                        <mat-slider class="slider-right" [ngStyle]="{ 'width': '70%' }" min="1" max="30" step="1" value="1"
+                            [disabled]="disabled"
+                            [invert]="invert"
+                            [thumb-label]="thumbLabel"
+                            [tick-interval]="tickInterval"
+                            name="sliderDest"
+                            [(ngModel)]="modeldestinationaddress.radius"
+                            #sliderDest="ngModel">
+                        </mat-slider>
+                        <br />
+                        <mat-form-field [ngStyle]="{ 'width': '19.6%' }">
+                            <input matInput type="text" placeholder="{{'Postcode' | translate}}" name="postcodeDest" [(ngModel)]="modeldestinationaddress.postcode" #postcodeDest="ngModel" />
+                        </mat-form-field>
+                        <mat-form-field [ngStyle]="{ 'width': '79%' }">
+                            <input matInput type="text" placeholder="{{'City' | translate}}" name="cityDest" [(ngModel)]="modeldestinationaddress.city" #cityDest="ngModel" />
+                        </mat-form-field>
+                        <mat-form-field [ngStyle]="{ 'width': '100%' }">
+                            <input matInput type="text" placeholder="{{'Country' | translate}}" name="countryDest" [(ngModel)]="modeldestinationaddress.country" #countryDest="ngModel" />
+                        </mat-form-field>
+                        <button class="btn btn-danger">{{'Search' | translate}}</button>
+                    </mat-card>
+                    </mat-card>
+                </form>
+            </div>
+            <div class="col-md-8">
+                <mat-card>
+                    <agm-map 
+                    [latitude]="lat"
+                    [longitude]="lng"
+                    [zoom]="zoom"
+                    [disableDefaultUI]="false"
+                    [zoomControl]="true"
+                    (mapClick)="mapClicked($event)">
+                    
+                        <agm-marker 
+                            *ngFor="let m of shipmentAnnouncements; let i = index"
+                            (markerClick)="clickedMarker(m.description, i)"
+                            [latitude]="+m.aproxsourcecoordinates.split(',')[0]"
+                            [longitude]="+m.aproxsourcecoordinates.split(',')[1]"
+                            [markerDraggable]="false"
+                            (dragEnd)="markerDragEnd(m, $event)">
+                            
+                            <agm-info-window>
+                                <strong [ngStyle]="{ 'cursor': 'pointer' }" (click)="openShipmentDetailDialog(m)">{{m.description}}</strong>
+                            </agm-info-window>
+                            
+                        </agm-marker>
+                        
+                        <agm-circle [latitude]="lat" [longitude]="lng" 
+                            [radius]="modelsourceaddress.radius * 1000"
+                            [fillColor]="'red'"
+                            [circleDraggable]="false"
+                            [editable]="false">
+                        </agm-circle>
+                    
+                    </agm-map>
+                </mat-card>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div [ngStyle]="{ 'margin-top': '10px' }">
+                    <app-shipment-table [(shipmentAnnouncement)]="shipmentAnnouncements" (change)="handleShipmentChanged()"></app-shipment-table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+        

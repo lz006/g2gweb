@@ -1,0 +1,105 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-md-10">
+      <h2 class="text-primary">{{user.displayname}}</h2>
+    </div>
+    <!--<div class="col-md-2">-->
+      <!--<i class="material-icons pull-right" (click)="onToggleEdit()">mode_edit</i>-->
+    <!--</div>-->
+
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <!--<mat-form-field>-->
+      <!--<input matInput [disabled]="readOnly" placeholder="Display Name" value={{user.displayname}}>-->
+      <!--</mat-form-field>-->
+      <mat-form-field>
+        <input matInput [disabled]="readOnly" placeholder="Email" value={{user.email}}>
+      </mat-form-field>
+      <mat-form-field>
+        <input matInput [disabled]="readOnly" placeholder="Sender Rating" value={{user.senderrating}}>
+      </mat-form-field>
+    </div>
+  </div>
+
+
+
+  <div class="row" *ngIf="user.role == 'DELIVERER'">
+    <div class="col-md-12">
+      <h4>Deliverer specific</h4>
+
+      <mat-form-field>
+        <mat-select placeholder="Identtype" [disabled]="readOnly" [(ngModel)]="user.identtype">
+          <mat-option value="ID">ID</mat-option>
+          <mat-option value="PASSPORT">PASSPORT</mat-option>
+          <mat-option value="DRIVERLICENCE">DRIVERLICENCE</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput [disabled]="readOnly" placeholder="Identification Number" value={{user.identno}}>
+      </mat-form-field>
+
+      <mat-form-field>
+        <input matInput disabled placeholder="Deliverer Rating" value={{user.delivererrating}}>
+      </mat-form-field>
+      <mat-checkbox disabled [(ngModel)]="user.identconfirmed">Identity confirmed</mat-checkbox>
+    </div>
+  </div>
+
+  <div class="row">
+    <div class="col-md-12">
+      <h4>Status</h4>
+
+      <mat-form-field>
+        <mat-select placeholder="Role" [disabled]="readOnly" [(ngModel)]="user.role">
+          <mat-option value="SENDER">Sender</mat-option>
+          <mat-option value="DELIVERER">Deliverer</mat-option>
+          <mat-option value="ADMIN">Admin</mat-option>
+        </mat-select>
+      </mat-form-field>
+
+      <mat-checkbox [disabled]="readOnly" [(ngModel)]="user.mailvalidated">Mail Validated</mat-checkbox>
+      <mat-checkbox [disabled]="readOnly" [(ngModel)]="user.active">Active</mat-checkbox>
+
+    </div>
+  </div>
+
+
+  <hr>
+  <!-- Buttons shown in READ mode-->
+  <div class="row" *ngIf="readOnly">
+    <div class="col-md-6">
+      <div *ngIf="user.role == 'DELIVERER' && user.identconfirmed === false">
+        <button class="btn btn-success" (click)="onVerify()">{{'Verify' | translate}}</button>
+        <button class="btn btn-danger" (click)="onDeny()">{{'Deny' | translate}}</button>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <button class="btn btn-danger pull-right" *ngIf="user.active" (click)="onBlock()">{{'Block' | translate}}</button>
+      <button class="btn btn-danger pull-right" *ngIf="!user.active" (click)="onUnblock()">{{'Unblock' | translate}}</button>
+    </div>
+  </div>
+
+  <!-- Buttons shown in EDIT mode-->
+  <div class="row" *ngIf="!readOnly">
+    <div class="col-md-12">
+      <button class="btn btn-primary pull-right" (click)="onSave()">{{'Save' | translate}}</button>
+    </div>
+  </div>
+
+
+  <!--
+      <div class="row">
+        <div class="col-md-12">
+          <h3>Additional Comment</h3>
+          <mat-form-field class="full-width">
+            <textarea matInput placeholder="Comment"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+    -->
+
+</div>

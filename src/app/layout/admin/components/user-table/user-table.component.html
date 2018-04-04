@@ -1,0 +1,75 @@
+<div class="card">
+    <div class="card-header" data-background-color="blue">
+        <h4 class="title">{{tableMetaData.title | translate}}</h4>
+        <p class="category">{{tableMetaData.description | translate}}</p>
+    </div>
+
+    <div class="card-content">
+        <div class="row">
+            <div class="col-md-12">
+                <mat-form-field>
+                    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Filter">
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <mat-table #table [dataSource]="dataSource">
+                <ng-container matColumnDef="id">
+                    <mat-header-cell *matHeaderCellDef> ID </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.id}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="displayname">
+                    <mat-header-cell *matHeaderCellDef> Displayname </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.displayname}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="identtype">
+                    <mat-header-cell *matHeaderCellDef> Identtype </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.identtype}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="email">
+                    <mat-header-cell *matHeaderCellDef> Email </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.email}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="senderrating">
+                    <mat-header-cell *matHeaderCellDef> Senderrating </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.senderrating}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="delivererrating">
+                    <mat-header-cell *matHeaderCellDef> Delivererrating </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.delivererrating}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="role">
+                    <mat-header-cell *matHeaderCellDef> Role </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.role}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="identno">
+                    <mat-header-cell *matHeaderCellDef> Identno </mat-header-cell>
+                    <mat-cell *matCellDef="let user"> {{user.identno}} </mat-cell>
+                </ng-container>
+
+                <ng-container matColumnDef="action">
+                    <mat-header-cell *matHeaderCellDef> Action </mat-header-cell>
+                    <mat-cell *matCellDef="let user"><button mat-button (click)="openUserDetailDialog(user)" class="btn btn-primary">{{'View' | translate}}</button></mat-cell>
+                </ng-container>
+
+                <mat-header-row *matHeaderRowDef="tableMetaData.displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: tableMetaData.displayedColumns;"></mat-row>
+            </mat-table>
+        </div>
+
+        <div class="row" *ngIf="users.length === 0">
+            <div class="col-md-12">
+                No data to display.
+            </div>
+        </div>
+
+    </div>
+</div>
+

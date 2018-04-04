@@ -1,0 +1,47 @@
+<div class="main-div">
+    <img src="assets/img/g2g_logo.png" class="center logo" />
+    <h2>Goods2Go</h2>
+    <a>{{'Next Level Shipping' | translate}}</a>
+    <mat-card class="center">
+        <mat-card-title>
+            {{'Register' | translate}}
+        </mat-card-title>
+        <div class="example-container">
+            <mat-radio-group>
+                <mat-radio-button value="1" checked="true">{{'Sender only' | translate}}</mat-radio-button>
+                <mat-radio-button #radio2 value="2">{{'Sender & Deliverer' | translate}}</mat-radio-button>
+            </mat-radio-group>
+                      
+            <form role="form" name="form" (ngSubmit)="f.form.valid && register()" #f="ngForm" novalidate>
+                <mat-form-field class="full-width">
+                    <input matInput type="email" placeholder="{{'E-Mail' | translate}}" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+                    <mat-error *ngIf="f.submitted && !email.valid">{{'E-Mail is required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" placeholder="{{'Password' | translate}}" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                    <mat-error *ngIf="f.submitted && !password.valid">{{'Password is required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" placeholder="{{'Confirm Password' | translate}}" name="password2" [(ngModel)]="model.password2" #password2="ngModel" required />
+                    <mat-error *ngIf="f.submitted && checkPassword">{{'Password must be equal' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="radio2.checked" [ngStyle]="{'width': '25%'}">
+                    <mat-select placeholder="{{'Ident Type' | translate}}" name="identtype" [(ngModel)]="model.identtype" #identtype="ngModel" required>
+                        <mat-option *ngFor="let identType of identTypes" [value]="identType.value">
+                        {{ identType.viewValue }}
+                        </mat-option>
+                    </mat-select>
+                    <mat-error *ngIf="f.submitted && !identtype.valid">{{'Ident Type is required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field *ngIf="radio2.checked" [ngStyle]="{'width': '74%'}">
+                    <input matInput type="text" placeholder="{{'Ident No.' | translate}}" name="identno" [(ngModel)]="model.identno" #identno="ngModel" required />
+                    <mat-error *ngIf="f.submitted && !identno.valid">{{'Ident No. is required' | translate}}</mat-error>
+                </mat-form-field>
+                      
+                <button [disabled]="loading" class="btn" color="primary">{{'Register' | translate}}</button>
+                <button [routerLink]="['/login']" class="btn" color="primary">{{'Login' | translate}}</button>
+                
+            </form>
+        </div> 
+    </mat-card>
+</div>

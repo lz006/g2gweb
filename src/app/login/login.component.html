@@ -1,0 +1,27 @@
+<div class="main-div">
+    <img src="assets/img/g2g_logo.png" class="center logo" />
+    <h2>Goods2Go</h2>
+    <a>{{'Next Level Shipping' | translate}}</a>
+    <mat-card class="center">
+        <mat-card-title>
+            {{'Login' | translate}}
+        </mat-card-title>
+        <div class="example-container">
+            <form role="form" name="form" (ngSubmit)="f.form.valid && login()" #f="ngForm" novalidate>
+                <mat-form-field class="full-width">
+                    <input matInput type="email" placeholder="{{'E-Mail' | translate}}" name="email" [(ngModel)]="model.email" #email="ngModel" required />
+                    <mat-error *ngIf="f.submitted && !email.valid">{{'E-Mail is required' | translate}}</mat-error>
+                </mat-form-field>
+                <mat-form-field class="full-width">
+                    <input matInput type="password" placeholder="{{'Password' | translate}}" name="password" [(ngModel)]="model.password" #password="ngModel" required />
+                    <mat-error *ngIf="f.submitted && !password.valid">{{'Password is required' | translate}}</mat-error>
+                </mat-form-field>
+                <button [disabled]="loading" mat-raised-button color="primary">{{'Login' | translate}}</button>
+                <button [routerLink]="['/signup']" mat-raised-button color="primary">{{'Register' | translate}}</button>  
+            </form>
+        </div> 
+    </mat-card>
+</div>
+
+
+      
